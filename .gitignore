@@ -3,3 +3,4 @@ node_modules/
 getlit.json
 out/
 .env
+.trash
