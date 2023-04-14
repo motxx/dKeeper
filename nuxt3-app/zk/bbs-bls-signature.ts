@@ -1,11 +1,3 @@
-import {
-  Bls12381G2KeyPair,
-  BbsBlsSignature2020,
-  BbsBlsSignatureProof2020,
-  deriveProof,
-} from "@mattrglobal/jsonld-signatures-bbs";
-import { extendContextLoader, sign, verify, purposes } from "jsonld-signatures";
-
 import inputDocument from "./data/inputDocument.json";
 import keyPairOptions from "./data/keyPair.json";
 import exampleControllerDoc from "./data/controllerDocument.json";
@@ -52,7 +44,6 @@ export class BbsBlsSignature {
     private BbsBls: typeof import("@mattrglobal/jsonld-signatures-bbs"),
     private JsonLd: typeof import("jsonld-signatures")
   ) {
-    console.log("AAA", this.BbsBls);
   }
 
   static async connect() {

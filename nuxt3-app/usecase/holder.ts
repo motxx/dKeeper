@@ -1,5 +1,7 @@
+import signedDocument from "../zk/data/signedDocument.json";
+
 export class Holder {
   fetchCredential = async () => {
-    return "vc fetched";
+    return JSON.stringify(signedDocument);
   };
 }

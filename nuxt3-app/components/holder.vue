@@ -1,21 +1,12 @@
 <script setup lang="ts">
 import { Holder } from "../usecase/holder";
 
-const zkAlgorithms = ["JSON-LD ZKP with BBS+", "ZK-SNARKs"];
+const name = ref("Taro");
+const gender = ref("Female");
+const country = ref("Japan");
+const discloseOptions = ["Deny", "Allow"];
 
 const fetchedCredential = ref("");
-
-const fields = ref([{ sbtAddress: '' }])
-
-const addField = () => {
-  fields.value.push({ sbtAddress: '' })
-}
-
-const removeField = () => {
-  if (fields.value.length > 1) {
-    fields.value.pop()
-  }
-}
 
 const fetchCredential = async () => {
   const res = await new Holder().fetchCredential();
@@ -66,41 +57,63 @@ const createPresentation = async () => {
       <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4 md:mb-8 tracking-tight">
         Create Verifiable Presentation
       </h2>
-      <div class="w-full max-w-lg flex flex-col">
-        <div v-for="(field, index) in fields" :key="index" class="flex flex-wrap -mx-3 mb-6">
-          <div class="w-full px-3 mbg-6 md:mb-0">
-            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" :for="'grid-sbt-' + index">
-              SBT Address
+      <div class="w-full max-w-lg flex flex-col" v-if="fetchedCredential">
+        <span class="mb-8">Select columns allowed to disclose.</span>
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3 mb-6 md:mb-0">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-username">
+              Name
             </label>
-            <input v-model="field.sbtAddress" :id="'grid-sbt-' + index" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="Enter SBT address">
+            <div class="flex">
+              <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-username" type="text" v-model="name" readonly>
+              <div class="relative ml-2 w-40">
+                <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-country">
+                  <option v-for="option in discloseOptions" :value="option" :key="option">{{ option }}</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M17.293 6.293a1 1 0 00-1.414-1.414L10 12.586 6.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l7-7z"/></svg>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="w-full max-w-lg flex justify-between mb-6">
-          <div class="btn-group">
-            <button class="btn btn-primary" type="button" @click="addField" title="Add another SBT address">
-              <i class="fas fa-plus"></i>
-            </button>
-            <button class="btn btn-danger" type="button" @click="removeField" :disabled="fields.length === 1" title="Remove the last SBT address">
-              <i class="fas fa-minus"></i>
-            </button>
+        <div class="flex flex-wrap -mx-3 mb-6">
+          <div class="w-full px-3 mb-6 md:mb-0">
+            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-gender">
+              Gender
+            </label>
+            <div class="flex">
+              <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-username" type="text" v-model="gender" readonly>
+              <div class="relative ml-2 w-40">
+                <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-country">
+                  <option v-for="option in discloseOptions" :value="option" :key="option">{{ option }}</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M17.293 6.293a1 1 0 00-1.414-1.414L10 12.586 6.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l7-7z"/></svg>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-6">
           <div class="w-full px-3 mb-6 md:mb-0">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-country">
-              ZK algorithm
+              Country
             </label>
-            <div class="relative">
-              <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-country">
-                <option value="">Select a ZK algorithm</option>
-                <option v-for="algorithm in zkAlgorithms" :value="algorithm" :key="algorithm">{{ algorithm }}</option>
-              </select>
-              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M17.293 6.293a1 1 0 00-1.414-1.414L10 12.586 6.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l7-7z"/></svg>
+            <div class="flex">
+              <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-username" type="text" v-model="country" readonly>
+              <div class="relative ml-2 w-40">
+                <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-country">
+                  <option v-for="option in discloseOptions" :value="option" :key="option">{{ option }}</option>
+                </select>
+                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M17.293 6.293a1 1 0 00-1.414-1.414L10 12.586 6.707 9.293a1 1 0 00-1.414 1.414l4 4a1 1 0 001.414 0l7-7z"/></svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
         <div class="flex flex-wrap -mx-3 mb-6 mt-auto">
           <div class="w-full px-3">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="createPresentation">
@@ -108,6 +121,9 @@ const createPresentation = async () => {
             </button>
           </div>
         </div>
+      </div>
+      <div class="w-full max-w-lg flex flex-col" v-else>
+        Fetch credential first.
       </div>
     </div>
   </section>
