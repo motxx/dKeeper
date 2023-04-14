@@ -4,6 +4,7 @@
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.114",
-    "esbuild": "^0.17.16"
+    "esbuild": "^0.17.16",
+    "yacht-lit-sdk": "link:yacht-lit-sdk"
   }
 }
