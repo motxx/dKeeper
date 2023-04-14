@@ -62,10 +62,16 @@ export const handler: APIGatewayProxyHandler = async (
   if (!event.body) {
     return Response.BadRequest("No proof");
   }
-  const body = JSON.parse(event.body);
-  const proof: string = body.proof;
-  const response = await verifyProof(proof);
-  return Response.Ok({
-    response,
-  });
+  try {
+    const body = JSON.parse(event.body);
+    const proof: string = body.proof;
+    const response = await verifyProof(proof).catch(e => {
+      return Response.InternalServerError(e);
+    });
+    return Response.Ok({
+      response,
+    });
+  } catch (e) {
+    return Response.InternalServerError(e);
+  }
 };
