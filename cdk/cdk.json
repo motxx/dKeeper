@@ -17,6 +17,7 @@
     ]
   },
   "context": {
+    "ecrRepoArn": "arn:aws:ecr:ap-northeast-1:368616803529:repository/verify-proof",
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
     "@aws-cdk/core:target-partitions": [

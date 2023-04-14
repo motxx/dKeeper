@@ -20,10 +20,13 @@ export class RestApis {
       v1,
       RestApis.baseHandlerId
     ).createResource();
+    // manually deployed for now.
+    /*
     new RestApiVerifyProof(
       this.scope,
       v1,
       RestApis.baseHandlerId
     ).createResource();
+    */
   }
 }
