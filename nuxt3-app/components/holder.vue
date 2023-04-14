@@ -3,7 +3,6 @@ import { Holder } from "../usecase/holder";
 
 const zkAlgorithms = ["JSON-LD ZKP with BBS+", "ZK-SNARKs"];
 
-const decrypteeSBTAddress = ref("");
 const fetchedCredential = ref("");
 
 const fields = ref([{ sbtAddress: '' }])
@@ -69,7 +68,7 @@ const createPresentation = async () => {
       </h2>
       <div class="w-full max-w-lg flex flex-col">
         <div v-for="(field, index) in fields" :key="index" class="flex flex-wrap -mx-3 mb-6">
-          <div class="w-full px-3 mb-6 md:mb-0">
+          <div class="w-full px-3 mbg-6 md:mb-0">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" :for="'grid-sbt-' + index">
               SBT Address
             </label>
