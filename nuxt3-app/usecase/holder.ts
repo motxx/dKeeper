@@ -1,22 +1,22 @@
+import { BbsBlsSignature } from "~/zk/bbs-bls-signature";
 import signedDocument from "../zk/data/signedDocument.json";
 
 export class Holder {
-  credentials: string | null = null;
-  presentation: string | null = null;
-
-  constructor() {
-  }
+  credential: object | null = null;
+  presentation: object | null = null;
 
   fetchCredential = async () => {
-    this.credentials = JSON.stringify(signedDocument);
-    return this.credentials;
+    this.credential = signedDocument;
+    return this.credential;
   };
 
   createPresentation = async () => {
-    if (!this.credentials) {
+    if (!this.credential) {
       return null;
     }
-    this.presentation = "present";
+    const bbsBls = await BbsBlsSignature.connect();
+    const proof = await bbsBls.deriveProof(this.credential);
+    this.presentation = proof;
     return this.presentation;
   };
 

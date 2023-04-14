@@ -6,20 +6,20 @@ const gender = ref("Female");
 const country = ref("Japan");
 const discloseOptions = ["Deny", "Allow"];
 
-const fetchedCredential = ref("");
+const credential = ref("");
 const presentation = ref("");
 
 const holder = new Holder();
 
 const fetchCredential = async () => {
   const res = await holder.fetchCredential();
-  fetchedCredential.value = res;
+  credential.value = JSON.stringify(res);
 };
 
 const createPresentation = async () => {
   const res = await holder.createPresentation();
   if (res) {
-    presentation.value = res;
+    presentation.value = JSON.stringify(res);
   }
 };
 
@@ -55,17 +55,17 @@ const execute = async () => {
             </button>
           </div>
         </div>
-        <div class="flex flex-wrap -mx-3 mb-6" v-if="fetchedCredential">
+        <div class="flex flex-wrap -mx-3 mb-6" v-if="credential">
           <div class="w-full px-3 mb-6 md:mb-0">
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-decrypted-data">
               Fetched Data
             </label>
-            <textarea v-model="fetchedCredential" id="grid-decrypted-data" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readonly></textarea>
+            <textarea v-model="credential" id="grid-decrypted-data" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readonly></textarea>
           </div>
         </div>
       </div>
       <!-- Create VP -->
-      <div v-if="fetchedCredential">
+      <div v-if="credential">
         <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4 md:mb-8 tracking-tight">
           Step2. Create Verifiable Presentation
         </h2>
