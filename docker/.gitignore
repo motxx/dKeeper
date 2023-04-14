@@ -6,3 +6,4 @@ test.json
 build.sh
 .DS_Store
 test/
+dist/
