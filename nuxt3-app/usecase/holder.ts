@@ -16,6 +16,7 @@ export class Holder {
     }
     const bbsBls = await BbsBlsSignature.connect();
     const proof = await bbsBls.deriveProof(this.credential);
+    console.log(proof);
     this.presentation = proof;
     return this.presentation;
   };

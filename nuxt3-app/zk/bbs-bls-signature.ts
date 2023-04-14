@@ -75,8 +75,6 @@ export class BbsBlsSignature {
 
   deriveProof = async (signedDocument: any) => {
     this.documentLoader = this.JsonLd.extendContextLoader(customDocLoader);
-    console.log("Input document with proof");
-    console.log(JSON.stringify(signedDocument, null, 2));
   
     //Derive a proof
     return await this.BbsBls.deriveProof(signedDocument, revealDocument, {

@@ -47,7 +47,7 @@ const customDocLoader = (url: string): any => {
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 const documentLoader: any = extendContextLoader(customDocLoader);
 
-const verifyProof = async (proof: string) => {
+const verifyPresentation = async (proof: string) => {
   const verified = await verify(proof, {
     suite: new BbsBlsSignatureProof2020(),
     purpose: new purposes.AssertionProofPurpose(),
@@ -63,9 +63,8 @@ export const handler: APIGatewayProxyHandler = async (
     return Response.BadRequest("No proof");
   }
   try {
-    const body = JSON.parse(event.body);
-    const proof: string = body.proof;
-    const response = await verifyProof(proof).catch(e => {
+    const presentation = JSON.parse(event.body);
+    const response = await verifyPresentation(presentation).catch(e => {
       return Response.InternalServerError(e);
     });
     return Response.Ok({

@@ -133,10 +133,19 @@ const execute = async () => {
               </button>
             </div>
           </div>
+
+          <div class="flex flex-wrap -mx-3 mb-6" v-if="presentation">
+            <div class="w-full px-3 mb-6 md:mb-0">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-presentation">
+                Presentation (Derived Proof)
+              </label>
+              <textarea v-model="presentation" id="grid-presentation" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readonly></textarea>
+            </div>
+          </div>
         </div>
 
         <!-- Execute -->
-        <div v-if="presentation.length > 0">
+        <div v-if="presentation">
           <h2 class="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4 md:mb-8 tracking-tight">
             Step3. Execute dApp
           </h2>

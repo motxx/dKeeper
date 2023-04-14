@@ -2,5 +2,7 @@ history.txt
 response.json
 test_lambda.sh
 test_api.sh
+test.json
 build.sh
 .DS_Store
+test/
