@@ -11,7 +11,7 @@
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.6.4",
     "autoprefixer": "^10.4.14",
-    "nuxt": "^3.3.2",
+    "nuxt": "^3.4.1",
     "tailwindcss": "^3.2.7"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "global": "^4.4.0",
     "jsonld": "4.0.1",
     "jsonld-signatures": "7.0.0",
+    "vite-plugin-node-polyfills": "^0.8.1",
     "vite-plugin-string": "^1.2.1"
   },
   "resolutions": {

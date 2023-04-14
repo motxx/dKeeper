@@ -45,37 +45,52 @@ const customDocLoader = (url: string): any => {
   );
 };
 
-//Extended document load that uses local contexts
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-const documentLoader: any = extendContextLoader(customDocLoader);
-
 export class BbsBlsSignature {
+  documentLoader: any;
+
+  private constructor(
+    private BbsBls: typeof import("@mattrglobal/jsonld-signatures-bbs"),
+    private JsonLd: typeof import("jsonld-signatures")
+  ) {
+    console.log("AAA", this.BbsBls);
+  }
+
+  static async connect() {
+    // 遅延ロード
+    return new BbsBlsSignature(
+      await import("@mattrglobal/jsonld-signatures-bbs"),
+      await import("jsonld-signatures")
+    );
+  }
+
   getKeyPair = async () => {
-    return await new Bls12381G2KeyPair(keyPairOptions);
+    return await new this.BbsBls.Bls12381G2KeyPair(keyPairOptions);
   };
 
   signDocument = async () => {
+    this.documentLoader = this.JsonLd.extendContextLoader(customDocLoader);
     const keyPair = await this.getKeyPair();
   
     console.log("Input document");
     console.log(JSON.stringify(inputDocument, null, 2));
   
     //Sign the input document
-    return await sign(inputDocument, {
-      suite: new BbsBlsSignature2020({ key: keyPair }),
-      purpose: new purposes.AssertionProofPurpose(),
-      documentLoader,
+    return await this.JsonLd.sign(inputDocument, {
+      suite: new this.BbsBls.BbsBlsSignature2020({ key: keyPair }),
+      purpose: new this.JsonLd.purposes.AssertionProofPurpose(),
+      documentLoader: this.documentLoader,
     });
   }
 
   deriveProof = async (signedDocument: any) => {
+    this.documentLoader = this.JsonLd.extendContextLoader(customDocLoader);
     console.log("Input document with proof");
     console.log(JSON.stringify(signedDocument, null, 2));
   
     //Derive a proof
-    return await deriveProof(signedDocument, revealDocument, {
-      suite: new BbsBlsSignatureProof2020(),
-      documentLoader,
+    return await this.BbsBls.deriveProof(signedDocument, revealDocument, {
+      suite: new this.BbsBls.BbsBlsSignatureProof2020(),
+      documentLoader: this.documentLoader,
     });
   }
 }
