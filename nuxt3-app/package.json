@@ -16,11 +16,19 @@
   },
   "dependencies": {
     "@lit-protocol/lit-node-client": "^2.1.96",
-    "@mattrglobal/jsonld-signatures-bbs": "^1.1.2",
     "@nuxt/schema": "^3.3.2",
     "ethers": "v6",
     "getlit": "^0.9.17",
     "global": "^4.4.0",
+    "@mattrglobal/jsonld-signatures-bbs": "link:../../",
+    "@mattrglobal/node-bbs-signatures": "0.15.0",
+    "jsonld": "4.0.1",
+    "jsonld-signatures": "7.0.0",
     "vite-plugin-string": "^1.2.1"
+  },
+  "resolutions": {
+    "@mattrglobal/jsonld-signatures-bbs/**/node-forge": "1.3.0",
+    "@mattrglobal/jsonld-signatures-bbs/**/json-schema": "0.4.0",
+    "@mattrglobal/jsonld-signatures-bbs/**/ansi-regex": "5.0.1"
   }
 }
