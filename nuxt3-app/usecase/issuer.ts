@@ -1,14 +1,13 @@
 import { BbsBlsSignature } from "~/zk/bbs-bls-signature";
 
 export class Issuer {
-  issueCredential = async () => {
+  issueCredential = async (inputDocument: object) => {
+    console.log(inputDocument);
     const bbsBls = await BbsBlsSignature.connect();
-    const signedDocument = await bbsBls.signDocument();
-    console.log("signedDocument", JSON.stringify(signedDocument));
-    await this.saveToCeramics(signedDocument);
+    const signedDocument = await bbsBls.signDocument(inputDocument);
+    await this.save(signedDocument);
   };
 
-  saveToCeramics = async (signedDocument: any) => {
-    console.log("saveToCeramics");
+  save = async (signedDocument: any) => {
   };
 }

@@ -1,4 +1,3 @@
-import inputDocument from "./data/inputDocument.json";
 import keyPairOptions from "./data/keyPair.json";
 import exampleControllerDoc from "./data/controllerDocument.json";
 import bbsContext from "./data/bbs.json";
@@ -58,7 +57,7 @@ export class BbsBlsSignature {
     return await new this.BbsBls.Bls12381G2KeyPair(keyPairOptions);
   };
 
-  signDocument = async () => {
+  signDocument = async (inputDocument: object) => {
     this.documentLoader = this.JsonLd.extendContextLoader(customDocLoader);
     const keyPair = await this.getKeyPair();
   

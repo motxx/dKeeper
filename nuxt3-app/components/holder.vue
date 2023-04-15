@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Holder } from "../usecase/holder";
+import { Web3 } from "../web3/web3";
 
 const name = ref("Taro");
 const gender = ref("Female");
@@ -24,7 +25,7 @@ const createPresentation = async () => {
 };
 
 const execute = async () => {
-  await holder.sendTransaction();
+  Web3.verifySignatureTest();
 };
 
 </script>

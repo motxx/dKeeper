@@ -7,7 +7,7 @@ export class Lit {
   /**
    * ZKP verifiable presentation and YouTube view count proof
    */
-  static authzIpfsId = "QmQAp2rw3pEqAq7ewwDVQmDwKnThxejTFUrRM8APQGszqt";
+  static authzIpfsId = "Qma8MgBV8TqGT8wTZkkEi3s2BEgbVpRYJcNeTeoA1xeWF7";
   litNodeClient: LitJsSdk.LitNodeClient;
 
   private constructor(
