@@ -62,6 +62,7 @@ export class Web3 {
     );
   };
 
+
   static verifySignatureTest = () => {
     /*
     const sig2 = {

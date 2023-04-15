@@ -9,7 +9,7 @@ const createMessage = (actions: any[]) => {
   return (
     "Condition verifications:\n" +
     actions.map(
-      (v) => `\nipfsId: ${v.ipfsId}\nparams: ${JSON.stringify(v.params, Object.keys(v.params).sort())}\n`
+      (v) => "\nipfsId: "+v.ipfsId+"\nparams: "+JSON.stringify(v.params, Object.keys(v.params).sort())+"\n"
     )
   );
 };

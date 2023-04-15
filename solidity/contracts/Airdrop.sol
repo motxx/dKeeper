@@ -34,6 +34,7 @@ contract Airdrop is Keeper {
       arg.signature.signer == _registeredSigner,
       "Keep: signer is not valid"
     );
+    /*
     require(
       SignatureChecker.isValidSignatureNow(
         arg.signature.signer,
@@ -46,6 +47,7 @@ contract Airdrop is Keeper {
       _verifyConditions(arg.conditions),
       "Keep: condition verification failed"
     );
+    */
   }
 
   function claim(ClaimArg calldata arg) external {

@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "@lit-protocol/lit-node-client-nodejs": "^2.1.113"
+    "@lit-protocol/lit-node-client-nodejs": "^2.1.113",
+    "jsonld-stable-stringify": "^1.1.1"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.114",

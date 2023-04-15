@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 //import * as fs from "fs";
 import type * as LitJsSdk from "@lit-protocol/lit-node-client";
 import jsonldStableStringify from "jsonld-stable-stringify";
+//import thecode from "../lit_actions/out/main.action.js";
 
 export class Lit {
   static chain = "polygon";
@@ -31,6 +32,7 @@ export class Lit {
   authorization = async (presentation: object, videoId: string) => {
     const authSig = await this.authSig();
     const res = await this.litNodeClient.executeJs({
+//      code: this.thecode(),
       ipfsId: Lit.authzIpfsId,
       authSig,
       jsParams: {

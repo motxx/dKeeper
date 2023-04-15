@@ -1,7 +1,9 @@
-import { Airdrop__factory } from "typechain";
+//import { Airdrop__factory } from "../typechain";
 import { BbsBlsSignature } from "../zk/bbs-bls-signature";
 import { Web3 } from "../web3/web3";
-import { Lit } from "lit/lit";
+import { Lit } from "../lit/lit";
+import { InterfaceAbi, ethers } from "ethers";
+import ABI from "./Airdrop.json";
 
 export class Holder {
   static contract = "0xA0e8Fe42bBD490858e4Ff7d5967a7ED477e3a59E";
@@ -50,8 +52,8 @@ export class Holder {
     const web3 = await Web3.connectWallet();
     const signer = await web3.signer;
     const addr = await web3.getAddress();
-    const airdrop = Airdrop__factory.connect(Holder.contract, signer);
-    airdrop.claim({
+    const airdrop = new ethers.Contract(Holder.contract, ABI as InterfaceAbi, signer);
+    await airdrop.claim({
       payee: addr,
       conditions: {
         ipfsIds: [
