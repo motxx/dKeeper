@@ -1,4 +1,4 @@
-import { BbsBlsSignature } from "~/zk/bbs-bls-signature";
+import { BbsBlsSignature } from "../zk/bbs-bls-signature";
 import signedDocument from "../zk/data/signedDocument.json";
 
 export class Holder {

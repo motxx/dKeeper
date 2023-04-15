@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Issuer } from '~/usecase/issuer.js';
+import { Issuer } from '../usecase/issuer';
 
 const countries = ["USA", "Canada", "Mexico", "Australia", "New Zealand", "United Kingdom", "France", "Germany", "Spain", "Italy", "Japan", "China", "India", "Brazil", "Argentina"];
 
