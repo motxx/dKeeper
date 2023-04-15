@@ -6,9 +6,11 @@
  * @params threshold
  */
 
+import { VerifierResult } from "types";
+
 const fetchAccessToken = async () => {
   const accessTokenProviderURL =
-    "https://ef05esawg6.execute-api.ap-northeast-1.amazonaws.com/prod/";
+    "https://ef05esawg6.execute-api.ap-northeast-1.amazonaws.com/prod/v1/access-token";
   const resp = await fetch(accessTokenProviderURL);
   return await resp.json();
 };
@@ -22,18 +24,64 @@ const fetchYouTubeViewCount = async (videoId: string, accessToken: string) => {
   return viewCount;
 };
 
-const main = async (videoId: string, threshold: number) => {
+const verifyYouTubeViewCount = async (videoId: string, threshold: number)
+  : Promise<VerifierResult> => {
+  let result: VerifierResult = {
+    data: JSON.stringify({}),
+    verified: false,
+  };
+
   const accessToken = await fetchAccessToken().catch((e) => {
-    throw new Error("failed to fetch access token");
+    result = {
+      data: JSON.stringify({
+        message: "failed to fetch access token"
+      }),
+      verified: false,
+    };
+    return;
   });
-  const viewCount = await fetchYouTubeViewCount(videoId, accessToken).catch(
-    (e) => {
-      throw new Error("failed to fetch YouTube view count");
-    }
-  );
-  if (viewCount < threshold) {
-    throw new Error("viewCount less than threshold");
+  if (!accessToken) {
+    return result;
   }
+
+  const viewCount = await fetchYouTubeViewCount(videoId, accessToken).catch((e) => {
+    result = {
+      data: JSON.stringify({
+        message: "failed to fetch YouTube view count"
+      }),
+      verified: false,
+    };
+    return;
+  });
+  if (!viewCount) {
+    return result;
+  }
+
+  if (viewCount < threshold) {
+    return {
+      data: JSON.stringify({
+        viewCount,
+        threshold,
+        message: "viewCount less than threshold",
+      }),
+      verified: false,
+    };
+  }
+
+  return {
+    data: JSON.stringify({
+      viewCount,
+      threshold,
+    }),
+    verified: true,
+  };
 };
 
-main(videoId, threhold);
+const main = async () => {
+  const result = await verifyYouTubeViewCount(videoId, threshold);
+  LitActions.setResponse({
+    response: JSON.stringify(result),
+  });
+};
+
+main();
