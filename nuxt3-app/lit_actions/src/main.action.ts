@@ -28,19 +28,16 @@ const main = async (actions: VerifierAction[]) => {
   const message = createMessage(actions);
   const messageBytes = new TextEncoder().encode(message);
   const hashedMessage = keccak256(messageBytes);
-  //  const resultPromises = actions.map((action) => Lit.Actions.call(action));
-  const result = await Lit.Actions.call(actions[0]).catch((e: any) => {
-    console.log("ERROR", e);
-    return;
-  });
-  if (!result) {
-    console.log("EMPTY");
-    return;
-  }
-  console.log("EXISTS", result);
-  /*
-  const results = await Promise.all(resultPromises);
-  for (const r of results) {
+
+  for await (const action of actions) {
+    const r = await Lit.Actions.call(action).catch((e: any) => {
+      console.log("ERROR", e);
+      return;
+    });
+    if (!r) {
+      console.log("EMPTY");
+      return;
+    }
     if (!r.success) {
       return;
     }
@@ -48,8 +45,9 @@ const main = async (actions: VerifierAction[]) => {
     if (!r.verified) {
       return;
     }
+    console.log("EXISTS", await r);
   }
-  */
+
   const toSign = [1, 2, 3]; //new TextEncoder().encode(hashedMessage);
   const sigShare = await LitActions.signEcdsa({
     toSign,
