@@ -12,7 +12,7 @@ const fetchAccessToken = async () => {
   const accessTokenProviderURL =
     "https://ef05esawg6.execute-api.ap-northeast-1.amazonaws.com/prod/v1/access-token";
   const resp = await fetch(accessTokenProviderURL);
-  return await resp.json();
+  return (await resp.json()).apiKey;
 };
 
 const fetchYouTubeViewCount = async (videoId: string, accessToken: string) => {
