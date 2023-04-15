@@ -33,24 +33,25 @@ const main = async (actions: VerifierAction[]) => {
     const r = await Lit.Actions.call(actions[0]).catch((e: any) => {
       return null;
     });
-    if (!r || !r.success) {
+    if (!r) {
       return null;
     }
-    const { data, verified } = r.response;
-    if (!verified) {
+    const json = JSON.parse(r);
+    if (!json.verified) {
       return null;
     }
   }
 
   if (actions.length > 0) {
     const r = await Lit.Actions.call(actions[1]).catch((e: any) => {
+      console.log("D");
       return null;
     });
-    if (!r || !r.success) {
+    if (!r) {
       return null;
     }
-    const { data, verified } = r.response;
-    if (!verified) {
+    const json = JSON.parse(r);
+    if (!json.verified) {
       return null;
     }
   }
@@ -60,35 +61,31 @@ const main = async (actions: VerifierAction[]) => {
   console.log("start");
   const promises = //Promise.all(
     actions.map(async (action: VerifierAction, i) => {
-      const r = await Lit.Actions.call(action).catch((e: any) => {
+      return await Lit.Actions.call(action).catch((e: any) => {
         return null;
       });
-      console.log("I'm ", i);
-      if (!r || !r.success) {
-        return null;
-      }
-      const { data, verified } = r.response;
-      if (!verified) {
-        return null;
-      }
-      return data;
     });
-  );
   for await (const promise of promises) {
     const res = await promise();
-    if (res === null) {
-      return;
+    if (!res) {
+      return null;
     }
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    const json = JSON.parse(res);
+    if (!json.verified) {
+      return null;
+    }
   }
   console.log("end");
   */
-
   const toSign = new TextEncoder().encode(hashedMessage);
   const sigShare = await LitActions.signEcdsa({
     toSign,
     publicKey,
     sigName,
+  });
+  LitActions.setResponse({
+    response: JSON.stringify(sigShare),
+//    response: JSON.stringify(result),
   });
 };
 
