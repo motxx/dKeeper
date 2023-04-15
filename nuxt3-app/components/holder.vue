@@ -11,6 +11,7 @@ const holderDID = ref("");
 const nameDisclosure = ref("Deny");
 const genderDisclosure = ref("Deny");
 const countryDisclosure = ref("Deny");
+const videoId = ref("");
 
 const credential = ref("");
 const presentation = ref("");
@@ -18,6 +19,7 @@ const presentation = ref("");
 const holder = new Holder();
 
 const fetchCredential = async () => {
+  // Web3.verifySignatureTest();
   const vc = await holder.fetchCredential(holderDID.value);
   if (!vc) {
     return;
@@ -33,6 +35,7 @@ const createPresentation = async () => {
     nameDisclosure.value === "Allow",
     genderDisclosure.value === "Allow",
     countryDisclosure.value === "Allow",
+    videoId.value,
   );
   if (res) {
     presentation.value = JSON.stringify(res, null, 4);
@@ -40,7 +43,7 @@ const createPresentation = async () => {
 };
 
 const execute = async () => {
-  Web3.verifySignatureTest();
+  await holder.claim();
 };
 
 </script>
@@ -152,7 +155,7 @@ const execute = async () => {
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-youtube-video-id">
                   YouTube Video Id
                 </label>
-                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-youtube-video-id" type="text" placeholder="Enter YouTube Video Id">
+                <input v-model="videoId" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-youtube-video-id" type="text" placeholder="Enter YouTube Video Id">
               </div>
             </div>
           </div>
