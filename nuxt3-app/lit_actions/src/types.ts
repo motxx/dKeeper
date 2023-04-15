@@ -3,6 +3,11 @@ export type VerifierAction = {
   params: object;
 };
 
+export type VerifierResult = {
+  data: string;
+  verified: boolean;
+};
+
 export type VerifyLitConditionKeysArgs = {
   contractAddress: string;
   // proofId: string;

@@ -2,10 +2,11 @@
  * NAME: main
  */
 
-import { ethers } from "ethers";
-import { VerifierAction, VerificationFailed } from "types";
+import { keccak256 } from "@ethersproject/keccak256";
+import { VerifierAction } from "types";
+//import { VerifierAction, VerificationFailed } from "types";
 
-const createMessage = (actions: VerifierAction[]) => {
+const createMessage = (actions: any[]) => {
   return (
     "Condition verifications:\n" +
     actions.map(
@@ -16,28 +17,45 @@ const createMessage = (actions: VerifierAction[]) => {
 
 const main = async (actions: VerifierAction[]) => {
   if (!actions.length) {
-    throw new Error("No verifierActions");
+    return;
   }
-
-  const hashedMessage = ethers.utils.keccak256(
-    ethers.utils.toUtf8Bytes(createMessage(actions))
-  );
-
-  const toSign = new TextEncoder().encode(hashedMessage);
-
   for (const action of actions) {
-    await Lit.Actions.call(action).catch((e: any) => {
-      throw new VerificationFailed(action, e.message);
-    });
+    if (!action.ipfsId.length || action.params == null) {
+      return;
+    }
   }
 
+  const message = createMessage(actions);
+  const messageBytes = new TextEncoder().encode(message);
+  const hashedMessage = keccak256(messageBytes);
+  //  const resultPromises = actions.map((action) => Lit.Actions.call(action));
+  const result = await Lit.Actions.call(actions[0]).catch((e: any) => {
+    console.log("ERROR", e);
+    return;
+  });
+  if (!result) {
+    console.log("EMPTY");
+    return;
+  }
+  console.log("EXISTS", result);
+  /*
+  const results = await Promise.all(resultPromises);
+  for (const r of results) {
+    if (!r.success) {
+      return;
+    }
+    const { data, verified } = r.response;
+    if (!r.verified) {
+      return;
+    }
+  }
+  */
+  const toSign = [1, 2, 3]; //new TextEncoder().encode(hashedMessage);
   const sigShare = await LitActions.signEcdsa({
     toSign,
     publicKey,
     sigName,
   });
-
-  return sigShare;
 };
 
 main(verifierActions);

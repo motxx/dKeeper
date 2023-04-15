@@ -1,5 +1,5 @@
 /**
- * NAME: youtube-view-count
+ * NAME: youtubeviewcount
  *
  * Throws if view count of videoId less than threshold.
  * @params videoId
