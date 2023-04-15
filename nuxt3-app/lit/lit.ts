@@ -4,7 +4,10 @@ import type * as LitJsSdk from "@lit-protocol/lit-node-client";
 
 export class Lit {
   static chain = "polygon";
-  static authzIpfsId = "QmYDAqgaXYT8Wn48irMtCzBvLBJhoWTnEBmZP4d9BmZpfe";
+  /**
+   * ZKP verifiable presentation and YouTube view count proof
+   */
+  static authzIpfsId = "QmQAp2rw3pEqAq7ewwDVQmDwKnThxejTFUrRM8APQGszqt";
   litNodeClient: LitJsSdk.LitNodeClient;
 
   private constructor(
