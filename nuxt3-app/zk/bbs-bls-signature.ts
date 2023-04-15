@@ -1,7 +1,7 @@
 import keyPairOptions from "./data/keyPair.json";
 import exampleControllerDoc from "./data/controllerDocument.json";
 import bbsContext from "./data/bbs.json";
-import revealDocument from "./data/deriveProofFrame.json";
+import revealDocumentBase from "./data/deriveProofFrame.json";
 import citizenVocab from "./data/citizenVocab.json";
 import credentialContext from "./data/credentialsContext.json";
 import suiteContext from "./data/suiteContext.json";
@@ -72,10 +72,36 @@ export class BbsBlsSignature {
     });
   }
 
-  deriveProof = async (signedDocument: any) => {
+  deriveProof = async (
+    signedDocument: any,
+    nameDisclosure: boolean,
+    genderDisclosure: boolean,
+    countryDisclosure: boolean,
+  ) => {
     this.documentLoader = this.JsonLd.extendContextLoader(customDocLoader);
   
     //Derive a proof
+    const nameReveal = {
+      "givenName": {},
+      "familyName": {},
+    };
+    const genderReveal = {
+      "gender": {},
+    };
+    const countryReveal = {
+      "birthCountry": {},
+    };
+    const revealDocument = {
+      ...revealDocumentBase,
+    "credentialSubject": {
+      "@explicit": true,
+      "type": ["PermanentResident", "Person"],
+        ...(nameDisclosure ? nameReveal : {}),
+        ...(genderDisclosure ? genderReveal : {}),
+        ...(countryDisclosure ? countryReveal : {}),
+      },
+    };
+    console.log(revealDocument);
     return await this.BbsBls.deriveProof(signedDocument, revealDocument, {
       suite: new this.BbsBls.BbsBlsSignatureProof2020(),
       documentLoader: this.documentLoader,

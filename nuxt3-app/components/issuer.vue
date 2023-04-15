@@ -15,7 +15,7 @@ const country = ref("");
 const createCredentialSubject = () => {
   return {
     credentialSubject: {
-      id: `did:${holderDid.value}`,
+      id: holderDid.value,
       type: ['PermanentResident', 'Person'],
       givenName: givenName.value,
       familyName: familyName.value,
@@ -32,21 +32,20 @@ const createCredentialSubject = () => {
 };
 
 const issueCredential = async () => {
-  if (holderDid.value === "" || givenName.value === "" || familyName.value === "" || gender.value === "" || birthDate.value === "" || country.value === "") {
   console.log(`Holder DID: ${holderDid.value}`);
   console.log(`Given Name: ${givenName.value}`);
   console.log(`Family Name: ${familyName.value}`);
   console.log(`Gender: ${gender.value}`);
   console.log(`Birth Date: ${birthDate.value}`);
   console.log(`Country: ${country.value}`);
-  return;
-}
-  console.log("ok");
-  const doc = {
+
+  if (holderDid.value === "" || givenName.value === "" || familyName.value === "" || gender.value === "" || birthDate.value === "" || country.value === "") {
+    return;
+  }
+  await new Issuer().issueCredential(holderDid.value, {
     ...inputDocument,
     ...createCredentialSubject()
-  };
-  await new Issuer().issueCredential(doc);
+  });
 };
 
 </script>

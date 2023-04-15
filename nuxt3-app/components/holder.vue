@@ -7,20 +7,35 @@ const gender = ref("Female");
 const country = ref("Japan");
 const discloseOptions = ["Deny", "Allow"];
 
+const holderDID = ref("");
+const nameDisclosure = ref("Deny");
+const genderDisclosure = ref("Deny");
+const countryDisclosure = ref("Deny");
+
 const credential = ref("");
 const presentation = ref("");
 
 const holder = new Holder();
 
 const fetchCredential = async () => {
-  const res = await holder.fetchCredential();
-  credential.value = JSON.stringify(res);
+  const vc = await holder.fetchCredential(holderDID.value);
+  if (!vc) {
+    return;
+  }
+  credential.value = JSON.stringify(vc, null, 4);
+  name.value = (vc as any).credentialSubject.givenName + " " + (vc as any).credentialSubject.familyName;
+  gender.value = (vc as any).credentialSubject.gender;
+  country.value = (vc as any).credentialSubject.birthCountry;
 };
 
 const createPresentation = async () => {
-  const res = await holder.createPresentation();
+  const res = await holder.createPresentation(
+    nameDisclosure.value === "Allow",
+    genderDisclosure.value === "Allow",
+    countryDisclosure.value === "Allow",
+  );
   if (res) {
-    presentation.value = JSON.stringify(res);
+    presentation.value = JSON.stringify(res, null, 4);
   }
 };
 
@@ -46,7 +61,7 @@ const execute = async () => {
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-did">
               DID
             </label>
-            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-did" type="text" placeholder="Enter holder DID">
+            <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-did" type="text" placeholder="Enter holder DID" v-model="holderDID">
           </div>
         </div>
         <div class="flex flex-wrap -mx-3 mb-6">
@@ -61,7 +76,7 @@ const execute = async () => {
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-decrypted-data">
               Fetched Data
             </label>
-            <textarea v-model="credential" id="grid-decrypted-data" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readonly></textarea>
+            <auto-height-textarea v-model="credential" id="grid-decrypted-data" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readonly />
           </div>
         </div>
       </div>
@@ -82,7 +97,7 @@ const execute = async () => {
               <div class="flex">
                 <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-username" type="text" v-model="name" readonly>
                 <div class="relative ml-2 w-40">
-                  <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-country">
+                  <select v-model="nameDisclosure" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-country">
                     <option v-for="option in discloseOptions" :value="option" :key="option">{{ option }}</option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -100,7 +115,7 @@ const execute = async () => {
               <div class="flex">
                 <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-username" type="text" v-model="gender" readonly>
                 <div class="relative ml-2 w-40">
-                  <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-country">
+                  <select v-model="genderDisclosure" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-country">
                     <option v-for="option in discloseOptions" :value="option" :key="option">{{ option }}</option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -118,7 +133,7 @@ const execute = async () => {
               <div class="flex">
                 <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-username" type="text" v-model="country" readonly>
                 <div class="relative ml-2 w-40">
-                  <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-country">
+                  <select v-model="countryDisclosure" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-country">
                     <option v-for="option in discloseOptions" :value="option" :key="option">{{ option }}</option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -157,7 +172,7 @@ const execute = async () => {
               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-presentation">
                 Presentation (Derived Proof)
               </label>
-              <textarea v-model="presentation" id="grid-presentation" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readonly></textarea>
+              <auto-height-textarea v-model="presentation" id="grid-presentation" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" readonly />
             </div>
           </div>
 
