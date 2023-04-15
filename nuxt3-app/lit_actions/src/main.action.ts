@@ -29,26 +29,62 @@ const main = async (actions: VerifierAction[]) => {
   const messageBytes = new TextEncoder().encode(message);
   const hashedMessage = keccak256(messageBytes);
 
-  for await (const action of actions) {
-    const r = await Lit.Actions.call(action).catch((e: any) => {
-      console.log("ERROR", e);
-      return;
+  {
+    const r = await Lit.Actions.call(actions[0]).catch((e: any) => {
+      return null;
     });
-    if (!r) {
-      console.log("EMPTY");
-      return;
-    }
-    if (!r.success) {
-      return;
+    if (!r || !r.success) {
+      return null;
     }
     const { data, verified } = r.response;
-    if (!r.verified) {
-      return;
+    if (!verified) {
+      return null;
     }
-    console.log("EXISTS", await r);
   }
 
-  const toSign = [1, 2, 3]; //new TextEncoder().encode(hashedMessage);
+  if (actions.length > 0) {
+    const r = await Lit.Actions.call(actions[1]).catch((e: any) => {
+      return null;
+    });
+    if (!r || !r.success) {
+      return null;
+    }
+    const { data, verified } = r.response;
+    if (!verified) {
+      return null;
+    }
+  }
+
+  // TODO: Loop lots of actions.
+  /*
+  console.log("start");
+  const promises = //Promise.all(
+    actions.map(async (action: VerifierAction, i) => {
+      const r = await Lit.Actions.call(action).catch((e: any) => {
+        return null;
+      });
+      console.log("I'm ", i);
+      if (!r || !r.success) {
+        return null;
+      }
+      const { data, verified } = r.response;
+      if (!verified) {
+        return null;
+      }
+      return data;
+    });
+  );
+  for await (const promise of promises) {
+    const res = await promise();
+    if (res === null) {
+      return;
+    }
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+  console.log("end");
+  */
+
+  const toSign = new TextEncoder().encode(hashedMessage);
   const sigShare = await LitActions.signEcdsa({
     toSign,
     publicKey,

@@ -18,17 +18,17 @@ const signatures = await client.executeJs({
     sigName: "sig1",
     verifierActions: [
       {
+        // verifyzk.action.js
         ipfsId: "QmcMtweCSaLS8TiAswcAVFcLUuSCcFgq5LktX8Ebz6Pvry",
         params: {
           presentation: JSON.stringify(presentation),
         },
       },
-      /*
       {
-        ipfsId: "QmPvewTbUeu74gCXMV4CqtFPhgRc1D7ZvsEjp5JZWsmKJW",
+        // alwaysverified.action.js
+        ipfsId: "QmUrgYBdJpDZFN9efrrwgwYziMCPhwihTgofVBMfYkMUgp",
         params: {},
       },
-      */
     ],
   },
 });
