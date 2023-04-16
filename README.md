@@ -6,7 +6,8 @@ Note: This project is created at ETHTokyo 2023 Hackathon and strongly WIP for no
 
 ## Ideal form of architecture (WIP)
 
-![ideal-architecture](https://user-images.githubusercontent.com/5776910/232265719-67a3717b-c5d2-43ae-ab6d-6abc21e65a09.jpg)
+![ideal-architecture](https://user-images.githubusercontent.com/5776910/232272490-f768da2c-5857-4b1a-9292-e5641a9b2012.jpg)
+
 
 ## Description
 
