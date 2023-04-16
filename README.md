@@ -14,8 +14,13 @@ A framework of access control in a dApp that utilizes signatures created by Lit 
 
 ### Access control by W3C verifiable credentials
 
-ZKP-compliant BBS BLS signature (provided by MATTR) for the VC by executing the Node.js codes via Lit Actions. Currently, a Lit Action requests to the server outside (AWS Lambda) and create signature by Lit nodes themselves.
+ZKP-compliant BBS BLS signature (provided by [MATTR](https://github.com/mattrglobal)) for the VC by executing the Node.js codes via Lit Actions. Currently, a Lit Action requests to the server outside (AWS Lambda) and create signature by Lit nodes themselves.
 
 ### Real-time access control
 
 Real-time access control to dApps, meaning that, for example, if a user has a designated role on a Discord channel or the user is YouTube video contributor with 1 million views and writes the user's signature on its description, lit protocol will check the role in real-time, and grant them permission to execute the dApp.
+
+## Contract design
+
+To enable your dApps to be controlled by dKeeper features, just inherit the `Keeper` contract, and deploy the dApp with the Lit Action PKP signature and verifier Lit Action IPFS CIDs in the constructor.
+The design is inspired by [Delegatable.sol](https://github.com/kamescg/delegatable-sol).
