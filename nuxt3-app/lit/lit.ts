@@ -10,6 +10,8 @@ export class Lit {
    * ZKP verifiable presentation and YouTube view count proof
    */
   static authzIpfsId = "Qma8MgBV8TqGT8wTZkkEi3s2BEgbVpRYJcNeTeoA1xeWF7";
+  static pkpPubKey =
+    "0x041463c0d75c9d1a254a0750228079eb7129fce053eb3ebe663896006cbad8c8321aaf5470c54b2eb43a3452616fb733ead681ca42bf96d01d4b0da30940894beb";
   litNodeClient: LitJsSdk.LitNodeClient;
 
   private constructor(
@@ -32,10 +34,11 @@ export class Lit {
   authorization = async (presentation: object, videoId: string) => {
     const authSig = await this.authSig();
     const res = await this.litNodeClient.executeJs({
-//      code: this.thecode(),
+      //      code: this.thecode(),
       ipfsId: Lit.authzIpfsId,
       authSig,
       jsParams: {
+        publicKey: Lit.pkpPubKey,
         sigName: "sig1",
         verifierActions: [
           {

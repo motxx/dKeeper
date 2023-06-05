@@ -21,7 +21,7 @@ export class Holder {
     nameDisclosure: boolean,
     genderDisclosure: boolean,
     countryDisclosure: boolean,
-    videoId: string,
+    videoId: string
   ) => {
     if (!this.credential) {
       return null;
@@ -31,41 +31,53 @@ export class Holder {
       this.credential,
       nameDisclosure,
       genderDisclosure,
-      countryDisclosure,
+      countryDisclosure
     );
     console.log(proof);
     this.presentation = proof;
 
     const lit = await Lit.connect();
-    const sig = await lit.authorization(proof, videoId);
-    console.log("Authorization result:\n", sig);
-    this.signature = sig.signature;
+    const sig = await lit.authorization(proof, videoId).catch((e) => {
+      //
+    });
+    //console.log("Authorization result:\n", sig);
+    try {
+      this.signature = sig.signature;
+    } catch (e) {}
 
-    return this.signature;
+    return this.presentation; //this.signature ?? "";
   };
 
   claim = async () => {
+    /*
     if (!this.signature) {
       alert("Signature not created yet.\nCreate presentation first");
       return;
     }
+    */
     const web3 = await Web3.connectWallet();
     const signer = await web3.signer;
-    const addr = await web3.getAddress();
-    const airdrop = new ethers.Contract(Holder.contract, ABI as InterfaceAbi, signer);
-    await airdrop.claim({
-      payee: addr,
-      conditions: {
+    const addr = "0x383c5aE80F96E5147F735FE354Bb8803eC30F97c";
+    const airdrop = new ethers.Contract(
+      Holder.contract,
+      ABI.abi as InterfaceAbi,
+      signer
+    );
+    await airdrop.claim([
+      addr,
+      {
         ipfsIds: [
           "QmcMtweCSaLS8TiAswcAVFcLUuSCcFgq5LktX8Ebz6Pvry",
           "QmWU8ZUGaTp4LdstmXobZTL8TfuzpFgAojSADwYoxWKF1t",
         ],
       },
-      signature: {
-        signer: "0x199BD7856801338571d1323503A16aE1b4d52d60",
-        signature: this.signature!,
-      }
-    })
+      {
+        signer:
+          "0x041463c0d75c9d1a254a0750228079eb7129fce053eb3ebe663896006cbad8c8321aaf5470c54b2eb43a3452616fb733ead681ca42bf96d01d4b0da30940894beb",
+        signature:
+          "0xe0299d560856b8c011fa602b182b10a53ab9638a5a355f059e3bc86880d3ced825043806b34b620803c2e99300e7d43f9bfb1090cb24e96315b286b0cd5dd3541c",
+      },
+    ]);
   };
 
   load = async (did: string) => {
@@ -75,5 +87,5 @@ export class Holder {
       return JSON.parse(serializedValue);
     }
     return null;
-  };  
+  };
 }

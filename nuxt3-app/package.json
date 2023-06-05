@@ -40,6 +40,7 @@
     "viem": "^0.3.2",
     "vite-plugin-node-polyfills": "^0.8.1",
     "vite-plugin-string": "^1.2.1",
+    "web3": "^1.9.0",
     "yacht-lit-sdk": "link:./yacht-lit-sdk"
   },
   "resolutions": {
